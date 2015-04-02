@@ -3,6 +3,7 @@ package vs.db;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.List;
 
 public class SqlQueryBuilder {
 
@@ -41,6 +42,34 @@ public class SqlQueryBuilder {
 
     public SqlQueryBuilder offset(long offset) {
         stringBuilder.append(" OFFSET ").append(offset);
+        return this;
+    }
+
+    public SqlQueryBuilder insert(String table) {
+        stringBuilder.append("INSERT INTO ").append(table);
+        return this;
+    }
+
+    public SqlQueryBuilder values(List<Object[]> values) {
+        String rowSeparator = " VALUES ";
+        for (Object[] row : values) {
+            stringBuilder.append(rowSeparator);
+
+            stringBuilder.append("(");
+            String valueSeparator = "";
+            for (Object value : row) {
+                stringBuilder.append(valueSeparator);
+                if (value instanceof String) {
+                    stringBuilder.append("'").append(value.toString()).append("'");
+                } else {
+                    stringBuilder.append(String.valueOf(value));
+                }
+                valueSeparator = ",";
+            }
+            stringBuilder.append(")");
+
+            rowSeparator = ",";
+        }
         return this;
     }
 

@@ -43,12 +43,12 @@ public class DbCopyMojo extends AbstractMojo {
 
     private DriverLoader driverLoader;
 
-    private SqlQueryBuilder queryBuilder;
+    private DbReader dbReader;
+
+    private DbWriter dbWriter;
 
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
-        queryBuilder = new SqlQueryBuilder();
-
         if (driverLoader == null) {
             driverLoader = new DefaultDriverLoader();
         }
@@ -72,6 +72,24 @@ public class DbCopyMojo extends AbstractMojo {
             targetConnection = connectionFactory.connect(targetUrl, targetUsername, targetPassword);
         } catch (SQLException e) {
             throw new MojoExecutionException("Database connection failed", e);
+        }
+
+        if (dbReader == null) {
+            dbReader = new DefaultDbReader(sourceConnection);
+        }
+        if (dbWriter == null) {
+            dbWriter = new DefaultDbWriter(targetConnection);
+        }
+        for (String table : tables) {
+            dbReader.setTable(table);
+            dbWriter.setTable(table);
+            do {
+                try {
+                    dbWriter.write(dbReader.read());
+                } catch (SQLException e) {
+                    throw new MojoExecutionException("Error occurred", e);
+                }
+            } while (dbReader.hasNext());
         }
 
         try {
@@ -124,5 +142,13 @@ public class DbCopyMojo extends AbstractMojo {
 
     public void setDriverLoader(DriverLoader driverLoader) {
         this.driverLoader = driverLoader;
+    }
+
+    public void setDbReader(DbReader dbReader) {
+        this.dbReader = dbReader;
+    }
+
+    public void setDbWriter(DbWriter dbWriter) {
+        this.dbWriter = dbWriter;
     }
 }

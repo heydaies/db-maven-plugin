@@ -20,6 +20,10 @@
                     <targetUrl>jdbc:driver://host:port/target</targetUrl>
                     <sourceUsername>name</sourceUsername>
                     <sourcePassword>password</sourcePassword>
+                    <tables>
+                        <table>table1</table>
+                        <table>table2</table>
+                    </tables>
                 </configuration>
             </plugin>
         </plugins>
