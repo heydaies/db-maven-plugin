@@ -43,8 +43,12 @@ public class DbCopyMojo extends AbstractMojo {
 
     private DriverLoader driverLoader;
 
+    private SqlQueryBuilder queryBuilder;
+
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
+        queryBuilder = new SqlQueryBuilder();
+
         if (driverLoader == null) {
             driverLoader = new DefaultDriverLoader();
         }
