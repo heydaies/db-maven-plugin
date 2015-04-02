@@ -14,6 +14,12 @@
             <plugin>
                 <artifactId>db-maven-plugin</artifactId>
                 <configuration>
+                    <sourceDriver>this.is.source.driver</sourceDriver>
+                    <targetDriver>this.is.target.driver</targetDriver>
+                    <sourceUrl>jdbc:driver://host:port/source</sourceUrl>
+                    <targetUrl>jdbc:driver://host:port/target</targetUrl>
+                    <sourceUsername>name</sourceUsername>
+                    <sourcePassword>password</sourcePassword>
                 </configuration>
             </plugin>
         </plugins>

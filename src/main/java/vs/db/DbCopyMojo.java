@@ -6,6 +6,9 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+
 @Mojo(name = "copy")
 public class DbCopyMojo extends AbstractMojo {
 
@@ -36,8 +39,42 @@ public class DbCopyMojo extends AbstractMojo {
     @Parameter
     private String targetDriver;
 
+    private DbConnectionFactory connectionFactory;
+
+    private DriverLoader driverLoader;
+
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
+        if (driverLoader == null) {
+            driverLoader = new DefaultDriverLoader();
+        }
+        if (connectionFactory == null) {
+            connectionFactory = new DefaultDbConnectionFactory();
+        }
+
+        // Loading drivers
+        try {
+            driverLoader.load(sourceDriver);
+            driverLoader.load(targetDriver);
+        } catch (ClassNotFoundException e) {
+            throw new MojoExecutionException("Unable to load driver", e);
+        }
+
+        // Establishing database connections
+        Connection sourceConnection = null;
+        Connection targetConnection = null;
+        try {
+            sourceConnection = connectionFactory.connect(sourceUrl, sourceUsername, sourcePassword);
+            targetConnection = connectionFactory.connect(targetUrl, targetUsername, targetPassword);
+        } catch (SQLException e) {
+            throw new MojoExecutionException("Database connection failed", e);
+        }
+
+        try {
+            sourceConnection.close();
+            targetConnection.close();
+        } catch (SQLException e) {
+        }
 
     }
 
@@ -75,5 +112,13 @@ public class DbCopyMojo extends AbstractMojo {
 
     public void setTargetDriver(String targetDriver) {
         this.targetDriver = targetDriver;
+    }
+
+    public void setConnectionFactory(DbConnectionFactory connectionFactory) {
+        this.connectionFactory = connectionFactory;
+    }
+
+    public void setDriverLoader(DriverLoader driverLoader) {
+        this.driverLoader = driverLoader;
     }
 }
