@@ -3,6 +3,7 @@ package vs.db;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
 public class SqlQueryBuilder {
@@ -59,7 +60,7 @@ public class SqlQueryBuilder {
             String valueSeparator = "";
             for (Object value : row) {
                 stringBuilder.append(valueSeparator);
-                if (value instanceof String) {
+                if (value instanceof String || value instanceof Date) {
                     stringBuilder.append("'").append(value.toString()).append("'");
                 } else {
                     stringBuilder.append(String.valueOf(value));
