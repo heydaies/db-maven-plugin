@@ -1,10 +1,18 @@
-package vs.db;
+package vs.db.copy;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
+import vs.db.util.DbConnectionFactory;
+import vs.db.util.DbReader;
+import vs.db.util.DbWriter;
+import vs.db.util.DriverLoader;
+import vs.db.util.impl.DefaultDbConnectionFactory;
+import vs.db.util.impl.DefaultDbReader;
+import vs.db.util.impl.DefaultDbWriter;
+import vs.db.util.impl.DefaultDriverLoader;
 
 import java.sql.Connection;
 import java.sql.SQLException;

@@ -1,4 +1,4 @@
-package vs.db;
+package vs.db.util;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

@@ -1,6 +1,7 @@
-package vs.db;
+package vs.db.util.impl;
 
 import junit.framework.TestCase;
+import vs.db.util.SqlQueryBuilder;
 
 import java.sql.Connection;
 import java.sql.SQLException;

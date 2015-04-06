@@ -1,4 +1,6 @@
-package vs.db;
+package vs.db.util.impl;
+
+import vs.db.util.DbConnectionFactory;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

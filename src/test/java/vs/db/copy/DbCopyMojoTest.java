@@ -1,14 +1,16 @@
-package vs.db;
+package vs.db.copy;
 
 import org.apache.maven.plugin.testing.AbstractMojoTestCase;
-import org.mockito.Mockito;
+import vs.db.util.DbConnectionFactory;
+import vs.db.util.DbReader;
+import vs.db.util.DbWriter;
+import vs.db.util.DriverLoader;
 
 import java.io.File;
 import java.sql.Connection;
 import java.sql.ResultSet;
 
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anySet;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;

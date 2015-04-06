@@ -1,4 +1,6 @@
-package vs.db;
+package vs.db.util.impl;
+
+import vs.db.util.DriverLoader;
 
 public class DefaultDriverLoader implements DriverLoader {
     @Override

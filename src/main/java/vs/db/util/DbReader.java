@@ -1,4 +1,4 @@
-package vs.db;
+package vs.db.util;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

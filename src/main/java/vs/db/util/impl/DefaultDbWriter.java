@@ -1,4 +1,7 @@
-package vs.db;
+package vs.db.util.impl;
+
+import vs.db.util.DbWriter;
+import vs.db.util.SqlQueryBuilder;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
