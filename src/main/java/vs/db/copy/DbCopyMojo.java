@@ -94,7 +94,11 @@ public class DbCopyMojo extends AbstractMojo {
             do {
                 try {
                     dbWriter.write(dbReader.read());
-                } catch (SQLException e) {
+                } catch (Exception e) {
+                    try {
+                        sourceConnection.close();
+                        targetConnection.close();
+                    } catch (SQLException e1) {}
                     throw new MojoExecutionException("Error occurred", e);
                 }
             } while (dbReader.hasNext());
@@ -103,8 +107,7 @@ public class DbCopyMojo extends AbstractMojo {
         try {
             sourceConnection.close();
             targetConnection.close();
-        } catch (SQLException e) {
-        }
+        } catch (SQLException e) {}
 
     }
 
