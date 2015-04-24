@@ -1,7 +1,8 @@
 package vs.db.util.impl;
 
 import vs.db.util.DbReader;
-import vs.db.util.SqlQueryBuilder;
+import vs.db.util.sql.SelectQueryBuilder;
+import vs.db.util.sql.SqlQueryBuilder;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -29,8 +30,7 @@ public class DefaultDbReader implements DbReader {
     @Override
     public ResultSet read() throws SQLException {
         PreparedStatement statement = queryBuilder
-                .select(SqlQueryBuilder.SelectionType.EVERYTHING)
-                .from(table)
+                .select(SelectQueryBuilder.SelectionType.EVERYTHING, table)
                 .limit(BATCH_SIZE)
                 .offset(currentCount)
                 .build(connection);

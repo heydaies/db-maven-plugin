@@ -1,7 +1,7 @@
-package vs.db.util.impl;
+package vs.db.util.sql;
 
 import junit.framework.TestCase;
-import vs.db.util.SqlQueryBuilder;
+import vs.db.util.sql.SqlQueryBuilder;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -22,8 +22,7 @@ public class SqlQueryBuilderTest extends TestCase{
     public void testBuildSelectCount() throws Exception {
         Connection connection = mock(Connection.class);
 
-        unit.select(SqlQueryBuilder.SelectionType.COUNT)
-                .from("testTable")
+        unit.select(SelectQueryBuilder.SelectionType.COUNT, "testTable")
                 .build(connection);
 
         verify(connection).prepareStatement("SELECT COUNT(*) FROM testTable");
@@ -32,8 +31,7 @@ public class SqlQueryBuilderTest extends TestCase{
     public void testBuildSelectWithLimitAndOffset() throws Exception {
         Connection connection = mock(Connection.class);
 
-        unit.select(SqlQueryBuilder.SelectionType.EVERYTHING)
-                .from("testTable")
+        unit.select(SelectQueryBuilder.SelectionType.EVERYTHING, "testTable")
                 .limit(100)
                 .offset(200)
                 .build(connection);
