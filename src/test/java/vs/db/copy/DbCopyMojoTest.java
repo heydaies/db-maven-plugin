@@ -1,6 +1,7 @@
 package vs.db.copy;
 
 import org.apache.maven.plugin.testing.AbstractMojoTestCase;
+import org.apache.maven.plugin.testing.SilentLog;
 import vs.db.util.DbConnectionFactory;
 import vs.db.util.DbReader;
 import vs.db.util.DbWriter;
@@ -31,6 +32,7 @@ public class DbCopyMojoTest extends AbstractMojoTestCase {
 
         File pom = getTestFile("src/test/resources/dbCopyMojoTestPom.xml");
         unit = (DbCopyMojo) lookupMojo("copy", pom);
+        unit.setLog(new SilentLog());
 
         connectionFactory = mock(DbConnectionFactory.class);
         unit.setConnectionFactory(connectionFactory);

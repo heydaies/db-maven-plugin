@@ -1,6 +1,7 @@
 package vs.db.export;
 
 import org.apache.maven.plugin.testing.AbstractMojoTestCase;
+import org.apache.maven.plugin.testing.SilentLog;
 import vs.db.copy.DbCopyMojo;
 import vs.db.util.DbConnectionFactory;
 import vs.db.util.DbReader;
@@ -32,6 +33,7 @@ public class DbExportMojoTest extends AbstractMojoTestCase {
 
         File pom = getTestFile("src/test/resources/dbExportMojoTestPom.xml");
         unit = (DbExportMojo) lookupMojo("export", pom);
+        unit.setLog(new SilentLog());
 
         connectionFactory = mock(DbConnectionFactory.class);
         unit.setConnectionFactory(connectionFactory);

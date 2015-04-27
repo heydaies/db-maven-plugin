@@ -1,5 +1,6 @@
 package vs.db.util.impl;
 
+import org.apache.maven.plugin.logging.Log;
 import vs.db.util.DbReader;
 import vs.db.util.sql.SelectQueryBuilder;
 import vs.db.util.sql.SqlQueryBuilder;
@@ -21,8 +22,11 @@ public class DefaultDbReader implements DbReader {
 
     private boolean next = true;
 
-    public DefaultDbReader(Connection connection) {
+    private Log logger;
+
+    public DefaultDbReader(Connection connection, Log logger) {
         this.connection = connection;
+        this.logger = logger;
     }
 
     @Override
@@ -55,5 +59,16 @@ public class DefaultDbReader implements DbReader {
     public void setTable(String table) {
         currentCount = 0;
         this.table = table;
+
+        try {
+            PreparedStatement statement = SqlQueryBuilder
+                    .select(SelectQueryBuilder.SelectionType.COUNT, table)
+                    .build(connection);
+
+            ResultSet result = statement.executeQuery();
+            long count = result.getLong(1);
+            logger.info("Found " + count + " records on " + table);
+
+        } catch (SQLException e) { }
     }
 }

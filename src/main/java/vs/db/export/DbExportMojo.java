@@ -62,12 +62,14 @@ public class DbExportMojo extends AbstractMojo {
             connectionFactory = new DefaultDbConnectionFactory();
         }
 
+        getLog().info("Loading driver");
         try {
             driverLoader.load(driver);
         } catch (ClassNotFoundException e) {
             throw new MojoExecutionException("Unable to load driver", e);
         }
 
+        getLog().info("Establishing database connection");
         Connection connection = null;
         try {
             connection = connectionFactory.connect(url, username, password);
@@ -76,7 +78,7 @@ public class DbExportMojo extends AbstractMojo {
         }
 
         if (dbReader == null) {
-            dbReader = new DefaultDbReader(connection);
+            dbReader = new DefaultDbReader(connection, getLog());
         }
         if (dbWriter == null) {
             try {
@@ -88,6 +90,7 @@ public class DbExportMojo extends AbstractMojo {
         for (String table : tables) {
             dbReader.setTable(table);
             dbWriter.setTable(table);
+            getLog().info("Exporting table " + table);
             do {
                 try {
                     dbWriter.write(dbReader.read());
@@ -101,6 +104,7 @@ public class DbExportMojo extends AbstractMojo {
             } while (dbReader.hasNext());
         }
 
+        getLog().info("Finished");
         try {
             connection.close();
         } catch (SQLException e) {}

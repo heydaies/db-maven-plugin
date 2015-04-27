@@ -64,7 +64,7 @@ public class DbCopyMojo extends AbstractMojo {
             connectionFactory = new DefaultDbConnectionFactory();
         }
 
-        // Loading drivers
+        getLog().info("Loading drivers");
         try {
             driverLoader.load(sourceDriver);
             driverLoader.load(targetDriver);
@@ -72,7 +72,7 @@ public class DbCopyMojo extends AbstractMojo {
             throw new MojoExecutionException("Unable to load driver", e);
         }
 
-        // Establishing database connections
+        getLog().info("Establishing database connections");
         Connection sourceConnection = null;
         Connection targetConnection = null;
         try {
@@ -83,7 +83,7 @@ public class DbCopyMojo extends AbstractMojo {
         }
 
         if (dbReader == null) {
-            dbReader = new DefaultDbReader(sourceConnection);
+            dbReader = new DefaultDbReader(sourceConnection, getLog());
         }
         if (dbWriter == null) {
             dbWriter = new DefaultDbWriter(targetConnection);
@@ -91,6 +91,7 @@ public class DbCopyMojo extends AbstractMojo {
         for (String table : tables) {
             dbReader.setTable(table);
             dbWriter.setTable(table);
+            getLog().info("Copying table " + table);
             do {
                 try {
                     dbWriter.write(dbReader.read());
@@ -104,6 +105,7 @@ public class DbCopyMojo extends AbstractMojo {
             } while (dbReader.hasNext());
         }
 
+        getLog().info("Finished");
         try {
             sourceConnection.close();
             targetConnection.close();

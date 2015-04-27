@@ -1,7 +1,7 @@
 package vs.db.util.impl;
 
 import junit.framework.TestCase;
-import vs.db.util.impl.DefaultDbReader;
+import org.apache.maven.plugin.testing.SilentLog;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -23,17 +23,24 @@ public class DefaultDbReaderTest extends TestCase {
         super.setUp();
 
         connection = mock(Connection.class);
-        unit = new DefaultDbReader(connection);
+        unit = new DefaultDbReader(connection, new SilentLog());
     }
 
     public void testRead() throws Exception {
         PreparedStatement statement = mock(PreparedStatement.class);
         ResultSet resultSet = mock(ResultSet.class);
+        PreparedStatement countStatement = mock(PreparedStatement.class);
+        ResultSet countResultSet = mock(ResultSet.class);
 
         when(connection.prepareStatement("SELECT * FROM testTable LIMIT " + DefaultDbReader.BATCH_SIZE + " OFFSET 0"))
                 .thenReturn(statement);
         when(statement.executeQuery()).thenReturn(resultSet);
         when(resultSet.next()).thenReturn(true);
+
+        when(connection.prepareStatement("SELECT COUNT(*) FROM testTable"))
+                .thenReturn(countStatement);
+        when(countStatement.executeQuery()).thenReturn(countResultSet);
+        when(countResultSet.getLong(1)).thenReturn(10l);
 
         unit.setTable("testTable");
         ResultSet result = unit.read();
