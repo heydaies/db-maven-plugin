@@ -1,0 +1,2 @@
+INSERT INTO test VALUES (1,'str1','2015-04-06 18:30:25.0'),(2,null,'2015-04-06 18:35:50.0'),(3,'str2',null)
+INSERT INTO other_table VALUES (1,'str1','2015-04-06 18:30:25.0'),(2,null,'2015-04-06 18:35:50.0'),(3,'str2',null)

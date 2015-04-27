@@ -3,24 +3,26 @@ package vs.db.util.impl;
 import vs.db.util.DbWriter;
 import vs.db.util.sql.SqlQueryBuilder;
 
-import java.sql.Connection;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DefaultDbWriter implements DbWriter {
-    private Connection connection;
+public class SqlQueryWriter implements DbWriter {
+
+    private FileWriter fileWriter;
 
     private String table;
 
-    public DefaultDbWriter(Connection connection) {
-        this.connection = connection;
+    public SqlQueryWriter(File outputFile) throws IOException {
+        fileWriter = new FileWriter(outputFile);
     }
 
     @Override
-    public void write(ResultSet resultSet) throws SQLException {
+    public void write(ResultSet resultSet) throws Exception {
         List<Object[]> results = new ArrayList<Object[]>();
         int columnCount = resultSet.getMetaData().getColumnCount();
         while (resultSet.next()) {
@@ -32,12 +34,13 @@ public class DefaultDbWriter implements DbWriter {
         }
 
         if (!results.isEmpty()) {
-            PreparedStatement statement = SqlQueryBuilder
+            String query = SqlQueryBuilder
                     .insert(table)
                     .values(results)
-                    .build(connection);
+                    .build();
 
-            statement.executeUpdate();
+            fileWriter.write(query + "\r\n");
+            fileWriter.flush();
         }
     }
 

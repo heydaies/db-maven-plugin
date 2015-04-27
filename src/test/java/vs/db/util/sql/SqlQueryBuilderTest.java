@@ -13,16 +13,10 @@ import static org.mockito.Mockito.verify;
 
 public class SqlQueryBuilderTest extends TestCase{
 
-    private SqlQueryBuilder unit;
-
-    public void setUp() throws Exception {
-        unit = new SqlQueryBuilder();
-    }
-
     public void testBuildSelectCount() throws Exception {
         Connection connection = mock(Connection.class);
 
-        unit.select(SelectQueryBuilder.SelectionType.COUNT, "testTable")
+        SqlQueryBuilder.select(SelectQueryBuilder.SelectionType.COUNT, "testTable")
                 .build(connection);
 
         verify(connection).prepareStatement("SELECT COUNT(*) FROM testTable");
@@ -31,7 +25,7 @@ public class SqlQueryBuilderTest extends TestCase{
     public void testBuildSelectWithLimitAndOffset() throws Exception {
         Connection connection = mock(Connection.class);
 
-        unit.select(SelectQueryBuilder.SelectionType.EVERYTHING, "testTable")
+        SqlQueryBuilder.select(SelectQueryBuilder.SelectionType.EVERYTHING, "testTable")
                 .limit(100)
                 .offset(200)
                 .build(connection);
@@ -48,7 +42,7 @@ public class SqlQueryBuilderTest extends TestCase{
                 new Object[] { 2, null, null }
         );
 
-        unit.insert("testTable")
+        SqlQueryBuilder.insert("testTable")
                 .values(values)
                 .build(connection);
 

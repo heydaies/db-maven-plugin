@@ -17,8 +17,6 @@ public class DefaultDbReader implements DbReader {
 
     private String table;
 
-    private SqlQueryBuilder queryBuilder = new SqlQueryBuilder();
-
     private long currentCount = 0;
 
     private boolean next = true;
@@ -29,7 +27,7 @@ public class DefaultDbReader implements DbReader {
 
     @Override
     public ResultSet read() throws SQLException {
-        PreparedStatement statement = queryBuilder
+        PreparedStatement statement = SqlQueryBuilder
                 .select(SelectQueryBuilder.SelectionType.EVERYTHING, table)
                 .limit(BATCH_SIZE)
                 .offset(currentCount)

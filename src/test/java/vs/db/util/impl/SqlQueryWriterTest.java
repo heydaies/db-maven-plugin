@@ -12,17 +12,17 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static vs.db.TestUtil.assertFile;
 
-public class CsvWriterTest extends TestCase {
+public class SqlQueryWriterTest extends TestCase {
 
-    private CsvWriter unit;
+    private SqlQueryWriter unit;
 
     private File testFile;
 
     public void setUp() throws Exception {
         super.setUp();
 
-        testFile = File.createTempFile("testoutput", "csv");
-        unit = new CsvWriter(testFile);
+        testFile = File.createTempFile("testoutput", "sql");
+        unit = new SqlQueryWriter(testFile);
     }
 
     private ResultSet prepareMocks() throws SQLException {
@@ -42,10 +42,11 @@ public class CsvWriterTest extends TestCase {
     }
 
     public void testWrite() throws Exception {
-        unit.setTable("table1");
+        unit.setTable("test");
         unit.write(prepareMocks());
+        unit.setTable("other_table");
         unit.write(prepareMocks());
 
-        assertFile(new File("src/test/resources/csvWriterTestExpectedResult.csv"), testFile);
+        assertFile(new File("src/test/resources/sqlQueryWriterTestExpectedResult.sql"), testFile);
     }
 }

@@ -9,10 +9,7 @@ import vs.db.util.DbConnectionFactory;
 import vs.db.util.DbReader;
 import vs.db.util.DbWriter;
 import vs.db.util.DriverLoader;
-import vs.db.util.impl.CsvWriter;
-import vs.db.util.impl.DefaultDbConnectionFactory;
-import vs.db.util.impl.DefaultDbReader;
-import vs.db.util.impl.DefaultDriverLoader;
+import vs.db.util.impl.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,7 +20,8 @@ import java.sql.SQLException;
 public class DbExportMojo extends AbstractMojo {
 
     public enum Format {
-        CSV
+        CSV,
+        SQL
     }
 
     @Parameter
@@ -112,6 +110,7 @@ public class DbExportMojo extends AbstractMojo {
     public DbWriter selectWriter() throws IOException {
         switch (format) {
             case CSV: return new CsvWriter(outputFile);
+            case SQL: return new SqlQueryWriter(outputFile);
             default: return null;
         }
     }
