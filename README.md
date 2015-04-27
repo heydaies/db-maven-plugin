@@ -58,7 +58,8 @@ tables - List of tables to copy
 ###Export
 Can be used for exporting table data to files.  
 Supported formats:  
-> CSV
+> CSV  
+> SQL
 
 **Usage example:**  
 ```
